@@ -14,7 +14,18 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: 'Webpack app'
+			template: PATHS.source + '/index.html'
 		})
-	]
+	],
+	module: {
+		rules: [
+			{
+				test: /\.html/,
+				loader: 'html-loader',
+				options: {
+
+				}
+			}
+		]
+	}
 }
