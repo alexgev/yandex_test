@@ -20,11 +20,28 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.html/,
+				test: /\.html$/,
 				loader: 'html-loader',
 				options: {
 
 				}
+			}
+		]
+	},
+	module: {
+		rules: [
+			{
+				test: /\.scss$/,
+				use: [
+					{loader: 'style-loader'},
+					{
+						loader: 'css-loader',
+						options: {
+							minimize: true
+						}
+					},
+					{loader: 'sass-loader'}
+				]
 			}
 		]
 	}
