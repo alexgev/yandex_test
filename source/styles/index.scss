@@ -1,0 +1,13 @@
+@import 'vars';
+
+* {
+	margin: 0;
+	border: none;
+	padding: 0;
+	list-style: none;
+	font-size: 16px;
+	background-color: $color;
+}
+
+
+@import 'media';
