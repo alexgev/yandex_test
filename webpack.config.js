@@ -28,14 +28,6 @@ const common = merge([
 	sass(),
 ]);
 
-// const developmentConfig = {
-// 	fontsForDev()
-// }
-
-// const productionConfig = {
-// 	fontsForProd()
-// }
-
 module.exports = function(env) {
 	if (env === 'production') {
 		return merge([

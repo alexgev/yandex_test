@@ -73,6 +73,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__styles_index_scss__);
 
 
+var inputValue = document.getElementsByClassName("switch-state__input_text")[0];
+var progressBar = document.getElementsByClassName("progressBar")[0];
+
+var progressBarBefore = document.getElementsByClassName("progress-bar-before")[0];
+var progressBarAfter = document.getElementsByClassName("progress-bar-after")[0];
+
+inputValue.oninput = () => {
+	console.log(inputValue.value);
+	if (inputValue.value[inputValue.value.length - 1] < '0' || inputValue.value[inputValue.value.length - 1] > '9') {
+		inputValue.value = '';
+	}
+	var progressValue = inputValue.value / 100 * 360;
+	console.log(progressValue);
+	if (inputValue.value <= 0 && inputValue.value != '') {
+		inputValue.value = 0;
+		progressValue = 0;
+	} else if (inputValue.value >= 100) {
+		inputValue.value = 100;
+		progressValue = 360;
+	}
+	if (progressValue <= 180) {
+		// progressBarBefore.style.transform = "";
+		progressBarBefore.style.transform = `rotate(${180 + +(progressValue)}deg)`;
+		progressBarBefore.style.backgroundColor = "#eeeeeb";
+		console.log(inputValue);
+		console.log(progressBarBefore.style.transform);
+	}
+	if (progressValue > 180) {
+		// progressBarBefore.style.transform = "";
+		progressBarBefore.style.backgroundColor = "#fdd94c";
+		progressBarBefore.style.transform = `rotate(${180 + +(progressValue) - 180}deg)`;
+	}
+};
+
+// inputValue.oninput = function() {
+// 	console.log(inputValue.value);
+// }
+
+console.log("hello");
+
+console.log(inputValue);
+
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -88,7 +130,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(7)(content, options);
+var update = __webpack_require__(13)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -113,7 +155,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "@font-face{font-family:roboto-ex;src:url(" + __webpack_require__(4) + ") format(\"eot\"),url(" + __webpack_require__(5) + ") format(\"woff\"),url(" + __webpack_require__(6) + ") format(\"truetype\")}*{margin:0;border:none;padding:0;list-style:none;font-size:16px;line-height:1.75;font-family:roboto-ex}body{background-color:#bfbfbf}.progress-api{width:568px;height:320px;background-color:#fff;padding:15px}.progress-bar__header{font-size:30px}.progress-bar,.progress-states{float:left;width:284px;height:100%}.progress-bar{background-color:#add8e6}.progress-states{background-color:#90ee90}", ""]);
+exports.push([module.i, "@font-face{font-family:roboto-ex;src:url(" + __webpack_require__(4) + ") format(\"eot\"),url(" + __webpack_require__(5) + ") format(\"woff\"),url(" + __webpack_require__(6) + ") format(\"truetype\")}@font-face{font-family:roboto-ex;font-weight:700;src:url(" + __webpack_require__(7) + ") format(\"eot\"),url(" + __webpack_require__(8) + ") format(\"woff\"),url(" + __webpack_require__(9) + ") format(\"truetype\")}@font-face{font-family:roboto-ex;font-weight:300;src:url(" + __webpack_require__(10) + ") format(\"eot\"),url(" + __webpack_require__(11) + ") format(\"woff\"),url(" + __webpack_require__(12) + ") format(\"truetype\")}*{margin:0;border:none;padding:0;list-style:none;font-size:16px;line-height:1.75;font-family:roboto-ex;font-weight:400}body{background-color:#bfbfbf}.progress-api{width:568px;height:320px;background-color:#fff;padding:15px}.progress-bar-place__header{font-size:30px;line-height:.8;margin-left:-2px}.progress-bar-place,.progress-states-place{float:left;width:284px;height:100%;position:relative}.progress-bar{position:absolute;width:160px;top:0;bottom:0;right:20px;margin:auto;height:160px;border-radius:50%;background-color:#fdd94c}.progress-bar .progress-bar-before{transform-origin:50% 50%;transform:rotate(180deg);z-index:1}.progress-bar .progress-bar-after,.progress-bar .progress-bar-before{position:absolute;background-color:#eeeeeb;width:160px;height:160px;border-radius:50%;clip:rect(0,80px,160px,0)}.progress-bar .progress-bar-after{transform-origin:50% 50%;transform:rotate(0deg)}.progress-bar .progress-bar__mask{position:absolute;top:8px;left:8px;width:144px;height:144px;background-color:#fff;border-radius:50%;z-index:2}.progress-states{display:inline-block;vertical-align:middle;height:110px;position:absolute;top:0;bottom:0;right:0;left:50px;margin:auto}.switch-state{position:relative;display:block;width:45px;height:30px;margin-bottom:10px}.switch-state:last-child{margin-bottom:0}.switch-state__input{display:none}.switch-state__slider{cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#494949}.switch-state__slider,.switch-state__slider:before{position:absolute;-webkit-transition:.4s;transition:.4s}.switch-state__slider:before{content:\"\";height:26px;width:26px;left:2px;bottom:2px;background-color:#d7d7d7}.switch-state__input:checked+.switch-state__slider{background-color:#7dd220}.switch-state__input:checked+.switch-state__slider:before{background-color:#fdfdfd}.switch-state__input:focus+.switch-state__slider{box-shadow:0 0 1px #2196f3}.switch-state__input:checked+.switch-state__slider:before{-webkit-transform:translateX(15px);-ms-transform:translateX(15px);transform:translateX(15px)}.switch-state__slider{border-radius:34px}.switch-state__slider:before{border-radius:50%}.switch-state_animation{top:0;right:0}.switch-state__input_text{box-sizing:border-box;text-align:center;width:45px;border-radius:15px;padding:0 7px;border:2px solid #d7d7d7;outline:none}.progress-state-animation,.progress-state-hide,.progress-state-value{position:relative}.switch-state__span{position:absolute;left:55px;top:0}", ""]);
 
 // exports
 
@@ -222,6 +264,42 @@ module.exports = __webpack_require__.p + "/fonts/RobotoRegular/RobotoRegular.ttf
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__.p + "/fonts/RobotoBold/RobotoBold.eot";
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "/fonts/RobotoBold/RobotoBold.woff";
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "/fonts/RobotoBold/RobotoBold.ttf";
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "/fonts/RobotoLight/RobotoLight.eot";
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "/fonts/RobotoLight/RobotoLight.woff";
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "/fonts/RobotoLight/RobotoLight.ttf";
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -275,7 +353,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(8);
+var	fixUrls = __webpack_require__(14);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -591,7 +669,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 8 */
+/* 14 */
 /***/ (function(module, exports) {
 
 

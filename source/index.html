@@ -8,11 +8,43 @@
 </head>
 <body>
 	<div class="progress-api">
-		<div class="progress-bar">
-			<h2 class="progress-bar__header">Progress</h2>
+		<div class="progress-bar-place">
+			<h2 class="progress-bar-place__header">Progress</h2>
+			<div class="progress-bar">
+				<div class="progress-bar-before"></div>
+				<div class="progress-bar__mask"></div>
+				<div class="progress-bar-after"></div>
+			</div>
 		</div>
-		<div class="progress-states">
-			
+		<div class="progress-states-place">
+			<div class="progress-states">
+				<!-- <label class="switch-state switch-state_value">
+					<input class="switch-state__input" type="text">
+				</label> -->
+				<div class="progress-state-value">
+					<input class="switch-state switch-state__input_text" type="text" maxlength="3">
+					<span class="switch-state__span switch-state__span_value">Value</span>
+				</div>
+				
+
+				<div class="progress-state-animation">
+					<label class="switch-state switch-state_animation">
+						<input class="switch-state__input" type="checkbox" checked>
+						<span class="switch-state__slider"></span>
+					</label>
+					<span class="switch-state__span switch-state__span_animate">Animate</span>
+				</div>
+				
+				<div class="progress-state-hide">
+					<label class="switch-state switch-state_hide">
+						<input class="switch-state__input" type="checkbox" checked>
+						<span class="switch-state__slider"></span>
+					</label>
+					<span class="switch-state__span switch-state__span_hide">Hide</span>
+
+				</div>
+				
+			</div>
 		</div>
 	</div>
 	
