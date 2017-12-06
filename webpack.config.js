@@ -5,6 +5,7 @@ const html = require('./webpack/html');
 const sass = require('./webpack/sass');
 const fontsForDev = require('./webpack/fonts-for-development');
 const fontsForProd = require('./webpack/fonts-for-production');
+const es6 = require('./webpack/es6');
 
 const PATHS = {
 	source: path.join(__dirname, "source"),
@@ -32,7 +33,8 @@ module.exports = function(env) {
 	if (env === 'production') {
 		return merge([
 			common,
-			fontsForProd()
+			fontsForProd(),
+			es6()
 		]);
 	};
 	if (env === 'development') {

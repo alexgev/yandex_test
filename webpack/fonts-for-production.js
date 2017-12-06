@@ -4,8 +4,10 @@ module.exports = function(paths) {
 			rules: [
 				{
 					test: /\.(eot|svg|ttf|woff|woff2)$/,
-					include: paths,
-					loader: 'file-loader?name=/fonts/[name]/[name].[ext]'
+					loader: 'file-loader',
+					options: {
+						name: 'fonts/[name]/[name].[ext]'
+					}
 				}
 			]
 		}

@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
-<body>
+<body style="visibility: hidden">
 	<div class="progress-api">
 		<div class="progress-bar-place">
 			<h2 class="progress-bar-place__header">Progress</h2>
@@ -29,7 +29,7 @@
 
 				<div class="progress-state-animation">
 					<label class="switch-state switch-state_animation">
-						<input class="switch-state__input" type="checkbox" checked>
+						<input class="switch-state__input" id="state-animated" type="checkbox">
 						<span class="switch-state__slider"></span>
 					</label>
 					<span class="switch-state__span switch-state__span_animate">Animate</span>
@@ -37,7 +37,7 @@
 				
 				<div class="progress-state-hide">
 					<label class="switch-state switch-state_hide">
-						<input class="switch-state__input" type="checkbox" checked>
+						<input class="switch-state__input" id="state-hidden" type="checkbox">
 						<span class="switch-state__slider"></span>
 					</label>
 					<span class="switch-state__span switch-state__span_hide">Hide</span>

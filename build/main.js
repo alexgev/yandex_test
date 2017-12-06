@@ -65,21 +65,38 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__styles_index_scss__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__styles_index_scss__);
 
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+document.addEventListener("DOMContentLoaded", document.body.style.visibility = "visible");
 
 var inputValue = document.getElementsByClassName("switch-state__input_text")[0];
-var progressBar = document.getElementsByClassName("progressBar")[0];
+var progressBar = document.getElementsByClassName("progress-bar")[0];
+var progressBarPlace = document.getElementsByClassName("progress-bar-place")[0];
 
 var progressBarBefore = document.getElementsByClassName("progress-bar-before")[0];
 var progressBarAfter = document.getElementsByClassName("progress-bar-after")[0];
 
-inputValue.oninput = () => {
+var stateAnimated = document.getElementById("state-animated");
+
+var stateHidden = document.getElementById("state-hidden");
+
+var setVendor = function setVendor(elem, prop, value) {
+	elem.style["-webkit-tranform"] = value;
+	elem.style["-moz-tranform"] = value;
+	elem.style["-ms-tranform"] = value;
+	elem.style["-o-tranform"] = value;
+};
+
+inputValue.oninput = function () {
 	console.log(inputValue.value);
 	if (inputValue.value[inputValue.value.length - 1] < '0' || inputValue.value[inputValue.value.length - 1] > '9') {
 		inputValue.value = '';
@@ -94,26 +111,175 @@ inputValue.oninput = () => {
 		progressValue = 360;
 	}
 	if (progressValue <= 180) {
-		// progressBarBefore.style.transform = "";
-		progressBarBefore.style.transform = `rotate(${180 + +(progressValue)}deg)`;
+		progressBarBefore.style.transform = "rotate(" + (180 + +progressValue) + "deg)";
+		setVendor(progressBarBefore, "transform", "rotate(" + (180 + +progressValue) + "deg)");
 		progressBarBefore.style.backgroundColor = "#eeeeeb";
-		console.log(inputValue);
-		console.log(progressBarBefore.style.transform);
 	}
 	if (progressValue > 180) {
-		// progressBarBefore.style.transform = "";
 		progressBarBefore.style.backgroundColor = "#fdd94c";
-		progressBarBefore.style.transform = `rotate(${180 + +(progressValue) - 180}deg)`;
+		progressBarBefore.style.transform = "rotate(" + (180 + +progressValue - 180) + "deg)";
+		setVendor(progressBarBefore, "transform", "rotate(" + (180 + +progressValue - 180) + "deg)");
 	}
 };
 
-// inputValue.oninput = function() {
-// 	console.log(inputValue.value);
+var AnimateBlock = function () {
+	function AnimateBlock(value, elem) {
+		_classCallCheck(this, AnimateBlock);
+
+		this.baseValue = value;
+		this.elem = elem;
+		this.transformDeg = 0;
+	}
+
+	_createClass(AnimateBlock, [{
+		key: "startAnimate",
+		value: function startAnimate() {
+			var _this = this;
+
+			this.timerId = setInterval(function () {
+				_this.transformDeg += 5;
+				if (_this.transformDeg >= 360) {
+					_this.transformDeg = _this.transformDeg - 360;
+				}
+				_this.elem.style.transform = "rotate(" + _this.transformDeg + "deg)";
+				setVendor(_this.elem, "transform", "rotate(" + _this.transformDeg + "deg)");
+			}, 10);
+		}
+	}, {
+		key: "stopAnimation",
+		value: function stopAnimation() {
+			clearInterval(this.timerId);
+		}
+	}]);
+
+	return AnimateBlock;
+}();
+
+var animateProgressBar = new AnimateBlock(baseValueAnimated, progressBar);
+
+var baseValueAnimated = stateAnimated.hasAttribute("checked");
+
+if (baseValueAnimated == true) {
+	animateProgressBar.startAnimate();
+}
+
+var countOfChangeAnimation = 0;
+var valueAnimated = false;
+
+stateAnimated.onchange = function () {
+	if (countOfChangeAnimation == 0) {
+		valueAnimated = !baseValueAnimated;
+	}
+	countOfChangeAnimation++;
+
+	if (valueAnimated == true) {
+		animateProgressBar.startAnimate();
+		valueAnimated = !valueAnimated;
+	} else {
+		animateProgressBar.stopAnimation();
+		valueAnimated = !valueAnimated;
+	}
+};
+
+var baseValueHidden = stateHidden.hasAttribute("checked");
+var valueHidden = false;
+var countOfChangeHidden = 0;
+
+if (baseValueHidden == true) {
+	progressBarPlace.style.display = "none";
+}
+
+var progressApi = document.getElementsByClassName("progress-api")[0];
+var progressApiPadding = getComputedStyle(progressApi).padding.replace(/[^0-9]/g, "");
+var progressApiWidth = getComputedStyle(progressApi).width.replace(/[^0-9]/g, "");
+var progressApiHeight = getComputedStyle(progressApi).height.replace(/[^0-9]/g, "");
+
+console.log(progressApiWidth);
+console.log(progressApiHeight);
+
+// window.onload = () => {
+// 	if (window.innerWidth <= 568) {
+// 		let a = progressApiHeight;
+// 		progressApiHeight = progressApiWidth;
+// 		progressApiWidth = a;
+// 	}
 // }
 
-console.log("hello");
+(function () {
+	var throttle = function throttle(type, name, obj) {
+		obj = obj || window;
+		var running = false;
+		var func = function func() {
+			if (running) {
+				return;
+			}
+			running = true;
+			requestAnimationFrame(function () {
+				obj.dispatchEvent(new CustomEvent(name));
+				running = false;
+			});
+		};
+		obj.addEventListener(type, func);
+	};
 
-console.log(inputValue);
+	/* init - you can init any event */
+	throttle("resize", "optimizedResize");
+})();
+
+var typeOfChange = false;
+if (window.innerWidth <= 584) {
+	typeOfChange = "lastChangeOnSmallSceen";
+} else {
+	typeOfChange = "lastChangeOnLargeScreen";
+}
+// handle event
+window.addEventListener("optimizedResize", function () {
+	// progressApiWidth = getComputedStyle(progressApi).width.replace(/[^0-9]/g,"");
+	if (window.innerWidth <= 584 && typeOfChange == "lastChangeOnLargeScreen") {
+		var a = progressApiHeight;
+		progressApiHeight = progressApiWidth;
+		progressApiWidth = a;
+		progressApi.style.height = progressApiHeight + "px";
+		progressApi.style.width = progressApiWidth + "px";
+		typeOfChange = "lastChangeOnSmallSceen";
+	} else if (window.innerWidth > 584 && typeOfChange == "lastChangeOnSmallSceen") {
+		var _a = progressApiHeight;
+		progressApiHeight = progressApiWidth;
+		progressApiWidth = _a;
+		progressApi.style.height = progressApiHeight + "px";
+		progressApi.style.width = progressApiWidth + "px";
+		typeOfChange = "lastChangeOnLargeScreen";
+	}
+});
+
+stateHidden.onchange = function () {
+	if (countOfChangeHidden == 0) {
+		valueHidden = !baseValueHidden;
+	}
+	countOfChangeHidden++;
+
+	if (valueHidden == true) {
+		console.log(progressApiWidth);
+		console.log(progressApiHeight);
+		if (progressApiHeight >= progressApiWidth) {
+			progressApi.style.height = progressApiHeight / 2 + +progressApiPadding + "px";
+		} else {
+			progressApi.style.width = progressApiWidth / 2 + +progressApiPadding + "px";
+		}
+		progressBarPlace.style.display = "none";
+		valueHidden = !valueHidden;
+	} else {
+		if (progressApiHeight >= progressApiWidth) {
+			progressApi.style.height = progressApiHeight + "px";
+		} else {
+			progressApi.style.width = progressApiWidth + "px";
+		}
+		console.log(progressApiWidth);
+		console.log(progressApiHeight);
+		progressBarPlace.style.display = "block";
+		valueHidden = !valueHidden;
+	}
+};
 
 /***/ }),
 /* 1 */
@@ -136,8 +302,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--1-1!../../node_modules/sass-loader/lib/loader.js!./index.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js??ref--1-1!../../node_modules/sass-loader/lib/loader.js!./index.scss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--1-1!../../node_modules/postcss-loader/lib/index.js??ref--1-2!../../node_modules/sass-loader/lib/loader.js??ref--1-3!./index.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--1-1!../../node_modules/postcss-loader/lib/index.js??ref--1-2!../../node_modules/sass-loader/lib/loader.js??ref--1-3!./index.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -155,28 +321,31 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "@font-face{font-family:roboto-ex;src:url(" + __webpack_require__(4) + ") format(\"eot\"),url(" + __webpack_require__(5) + ") format(\"woff\"),url(" + __webpack_require__(6) + ") format(\"truetype\")}@font-face{font-family:roboto-ex;font-weight:700;src:url(" + __webpack_require__(7) + ") format(\"eot\"),url(" + __webpack_require__(8) + ") format(\"woff\"),url(" + __webpack_require__(9) + ") format(\"truetype\")}@font-face{font-family:roboto-ex;font-weight:300;src:url(" + __webpack_require__(10) + ") format(\"eot\"),url(" + __webpack_require__(11) + ") format(\"woff\"),url(" + __webpack_require__(12) + ") format(\"truetype\")}*{margin:0;border:none;padding:0;list-style:none;font-size:16px;line-height:1.75;font-family:roboto-ex;font-weight:400}body{background-color:#bfbfbf}.progress-api{width:568px;height:320px;background-color:#fff;padding:15px}.progress-bar-place__header{font-size:30px;line-height:.8;margin-left:-2px}.progress-bar-place,.progress-states-place{float:left;width:284px;height:100%;position:relative}.progress-bar{position:absolute;width:160px;top:0;bottom:0;right:20px;margin:auto;height:160px;border-radius:50%;background-color:#fdd94c}.progress-bar .progress-bar-before{transform-origin:50% 50%;transform:rotate(180deg);z-index:1}.progress-bar .progress-bar-after,.progress-bar .progress-bar-before{position:absolute;background-color:#eeeeeb;width:160px;height:160px;border-radius:50%;clip:rect(0,80px,160px,0)}.progress-bar .progress-bar-after{transform-origin:50% 50%;transform:rotate(0deg)}.progress-bar .progress-bar__mask{position:absolute;top:8px;left:8px;width:144px;height:144px;background-color:#fff;border-radius:50%;z-index:2}.progress-states{display:inline-block;vertical-align:middle;height:110px;position:absolute;top:0;bottom:0;right:0;left:50px;margin:auto}.switch-state{position:relative;display:block;width:45px;height:30px;margin-bottom:10px}.switch-state:last-child{margin-bottom:0}.switch-state__input{display:none}.switch-state__slider{cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#494949}.switch-state__slider,.switch-state__slider:before{position:absolute;-webkit-transition:.4s;transition:.4s}.switch-state__slider:before{content:\"\";height:26px;width:26px;left:2px;bottom:2px;background-color:#d7d7d7}.switch-state__input:checked+.switch-state__slider{background-color:#7dd220}.switch-state__input:checked+.switch-state__slider:before{background-color:#fdfdfd}.switch-state__input:focus+.switch-state__slider{box-shadow:0 0 1px #2196f3}.switch-state__input:checked+.switch-state__slider:before{-webkit-transform:translateX(15px);-ms-transform:translateX(15px);transform:translateX(15px)}.switch-state__slider{border-radius:34px}.switch-state__slider:before{border-radius:50%}.switch-state_animation{top:0;right:0}.switch-state__input_text{box-sizing:border-box;text-align:center;width:45px;border-radius:15px;padding:0 7px;border:2px solid #d7d7d7;outline:none}.progress-state-animation,.progress-state-hide,.progress-state-value{position:relative}.switch-state__span{position:absolute;left:55px;top:0}", ""]);
+exports.push([module.i, "@font-face{font-family:roboto-ex;src:url(" + __webpack_require__(4) + ") format(\"eot\"),url(" + __webpack_require__(5) + ") format(\"woff\"),url(" + __webpack_require__(6) + ") format(\"truetype\")}@font-face{font-family:roboto-ex;font-weight:700;src:url(" + __webpack_require__(7) + ") format(\"eot\"),url(" + __webpack_require__(8) + ") format(\"woff\"),url(" + __webpack_require__(9) + ") format(\"truetype\")}@font-face{font-family:roboto-ex;font-weight:300;src:url(" + __webpack_require__(10) + ") format(\"eot\"),url(" + __webpack_require__(11) + ") format(\"woff\"),url(" + __webpack_require__(12) + ") format(\"truetype\")}*{margin:0;border:none;padding:0;list-style:none;font-size:16px;line-height:1.75;font-family:roboto-ex;font-weight:400;-webkit-box-sizing:border-box;box-sizing:border-box}body{background-color:#bfbfbf}.progress-api{width:568px;height:320px;margin:auto;background-color:#fff;padding:15px}.progress-bar-place__header{font-size:30px;line-height:.8;margin-left:-2px}.progress-bar-place,.progress-states-place{float:left;width:269px;height:100%;position:relative}.progress-bar{position:absolute;width:160px;top:0;bottom:0;right:20px;margin:auto;height:160px;border-radius:50%;background-color:#fdd94c}.progress-bar .progress-bar-before{-webkit-transform-origin:50% 50%;-ms-transform-origin:50% 50%;transform-origin:50% 50%;-webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg);z-index:1}.progress-bar .progress-bar-after,.progress-bar .progress-bar-before{position:absolute;background-color:#eeeeeb;width:160px;height:160px;border-radius:50%;clip:rect(0,80px,160px,0)}.progress-bar .progress-bar-after{-webkit-transform-origin:50% 50%;-ms-transform-origin:50% 50%;transform-origin:50% 50%;-webkit-transform:rotate(0deg);-ms-transform:rotate(0deg);transform:rotate(0deg)}.progress-bar .progress-bar__mask{position:absolute;top:8px;left:8px;width:144px;height:144px;background-color:#fff;border-radius:50%;z-index:2}.progress-states{display:inline-block;vertical-align:middle;height:110px;position:absolute;top:0;bottom:0;right:0;left:50px;margin:auto}.switch-state{position:relative;display:block;width:45px;height:30px;margin-bottom:10px}.switch-state:last-child{margin-bottom:0}.switch-state__input{display:none}.switch-state__slider{cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#494949}.switch-state__slider,.switch-state__slider:before{position:absolute;-webkit-transition:.4s;-o-transition:.4s;transition:.4s}.switch-state__slider:before{content:\"\";height:26px;width:26px;left:2px;bottom:2px;background-color:#d7d7d7}.switch-state__input:checked+.switch-state__slider{background-color:#7dd220}.switch-state__input:checked+.switch-state__slider:before{background-color:#fdfdfd}.switch-state__input:focus+.switch-state__slider{-webkit-box-shadow:0 0 1px #2196f3;box-shadow:0 0 1px #2196f3}.switch-state__input:checked+.switch-state__slider:before{-webkit-transform:translateX(15px);-ms-transform:translateX(15px);transform:translateX(15px)}.switch-state__slider{border-radius:34px}.switch-state__slider:before{border-radius:50%}.switch-state_animation{top:0;right:0}.switch-state__input_text{-webkit-box-sizing:border-box;box-sizing:border-box;text-align:center;width:45px;border-radius:15px;padding:0 7px;border:2px solid #d7d7d7;outline:none}.progress-state-animation,.progress-state-hide,.progress-state-value{position:relative}.switch-state__span{position:absolute;left:55px;top:0}@media only screen and (max-width:584px){.progress-bar-place,.progress-states-place{clear:both;height:269px;width:100%}.progress-bar{top:60px;right:0;left:0;bottom:20px;margin:auto}.progress-states{left:91px}.progress-api{width:320px;height:568px}}", ""]);
 
 // exports
 
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
 // css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
+module.exports = function (useSourceMap) {
 	var list = [];
 
 	// return the list of modules as css string
 	list.toString = function toString() {
 		return this.map(function (item) {
 			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
+			if (item[2]) {
 				return "@media " + item[2] + "{" + content + "}";
 			} else {
 				return content;
@@ -185,25 +354,23 @@ module.exports = function(useSourceMap) {
 	};
 
 	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
+	list.i = function (modules, mediaQuery) {
+		if (typeof modules === "string") modules = [[null, modules, ""]];
 		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
+		for (var i = 0; i < this.length; i++) {
 			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
+			if (typeof id === "number") alreadyImportedModules[id] = true;
 		}
-		for(i = 0; i < modules.length; i++) {
+		for (i = 0; i < modules.length; i++) {
 			var item = modules[i];
 			// skip already imported module
 			// this implementation is not 100% perfect for weird media query combinations
 			//  when a module is imported multiple times with different media queries.
 			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
+			if (typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if (mediaQuery && !item[2]) {
 					item[2] = mediaQuery;
-				} else if(mediaQuery) {
+				} else if (mediaQuery) {
 					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
 				}
 				list.push(item);
@@ -223,7 +390,7 @@ function cssWithMappingToString(item, useSourceMap) {
 	if (useSourceMap && typeof btoa === 'function') {
 		var sourceMapping = toComment(cssMapping);
 		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */';
 		});
 
 		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
@@ -241,60 +408,59 @@ function toComment(sourceMap) {
 	return '/*# ' + data + ' */';
 }
 
-
 /***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/fonts/RobotoRegular/RobotoRegular.eot";
+module.exports = __webpack_require__.p + "fonts/RobotoRegular/RobotoRegular.eot";
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/fonts/RobotoRegular/RobotoRegular.woff";
+module.exports = __webpack_require__.p + "fonts/RobotoRegular/RobotoRegular.woff";
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/fonts/RobotoRegular/RobotoRegular.ttf";
+module.exports = __webpack_require__.p + "fonts/RobotoRegular/RobotoRegular.ttf";
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/fonts/RobotoBold/RobotoBold.eot";
+module.exports = __webpack_require__.p + "fonts/RobotoBold/RobotoBold.eot";
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/fonts/RobotoBold/RobotoBold.woff";
+module.exports = __webpack_require__.p + "fonts/RobotoBold/RobotoBold.woff";
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/fonts/RobotoBold/RobotoBold.ttf";
+module.exports = __webpack_require__.p + "fonts/RobotoBold/RobotoBold.ttf";
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/fonts/RobotoLight/RobotoLight.eot";
+module.exports = __webpack_require__.p + "fonts/RobotoLight/RobotoLight.eot";
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/fonts/RobotoLight/RobotoLight.woff";
+module.exports = __webpack_require__.p + "fonts/RobotoLight/RobotoLight.woff";
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/fonts/RobotoLight/RobotoLight.ttf";
+module.exports = __webpack_require__.p + "fonts/RobotoLight/RobotoLight.ttf";
 
 /***/ }),
 /* 13 */
@@ -670,7 +836,9 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 /* 14 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 /**
@@ -687,64 +855,63 @@ function updateLink (link, options, obj) {
  */
 
 module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
+	// get current location
+	var location = typeof window !== "undefined" && window.location;
 
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
+	if (!location) {
+		throw new Error("fixUrls requires window.location");
+	}
 
 	// blank or null?
 	if (!css || typeof css !== "string") {
-	  return css;
-  }
+		return css;
+	}
 
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+	var baseUrl = location.protocol + "//" + location.host;
+	var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
 
 	// convert each url(...)
 	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
+ This regular expression is just a way to recursively match brackets within
+ a string.
+ 	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+    (  = Start a capturing group
+      (?:  = Start a non-capturing group
+          [^)(]  = Match anything that isn't a parentheses
+          |  = OR
+          \(  = Match a start parentheses
+              (?:  = Start another non-capturing groups
+                  [^)(]+  = Match anything that isn't a parentheses
+                  |  = OR
+                  \(  = Match a start parentheses
+                      [^)(]*  = Match anything that isn't a parentheses
+                  \)  = Match a end parentheses
+              )  = End Group
               *\) = Match anything and then a close parens
           )  = Close non-capturing group
           *  = Match anything
        )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+  \)  = Match a close parens
+ 	 /gi  = Get all matches, not the first.  Be case insensitive.
+  */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function (fullMatch, origUrl) {
 		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+		var unquotedOrigUrl = origUrl.trim().replace(/^"(.*)"$/, function (o, $1) {
+			return $1;
+		}).replace(/^'(.*)'$/, function (o, $1) {
+			return $1;
+		});
 
 		// already a full url? no change
 		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
+			return fullMatch;
 		}
 
 		// convert the url to a full url
 		var newUrl;
 
 		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
+			//TODO: should we add protocol?
 			newUrl = unquotedOrigUrl;
 		} else if (unquotedOrigUrl.indexOf("/") === 0) {
 			// path should be relative to the base url
@@ -761,7 +928,6 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
-
 
 /***/ })
 /******/ ]);
