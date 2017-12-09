@@ -1,4 +1,5 @@
 import './styles/index.scss';
+require('./favicon16.png');
 
 document.addEventListener("DOMContentLoaded", document.body.style.visibility = "visible");
 

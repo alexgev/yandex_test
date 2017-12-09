@@ -7,6 +7,7 @@ const fontsForProd = require('./webpack/fonts-for-production');
 const es6 = require('./webpack/es6');
 const uglifyjs = require('./webpack/uglifyjs');
 const css = require('./webpack/css');
+const images = require('./webpack/images');
 
 const PATHS = {
 	source: path.join(__dirname, "source"),
@@ -27,6 +28,7 @@ const common = merge([
 		]
 	},
 	sass(),
+	images()
 ]);
 
 module.exports = function(env) {
