@@ -5,6 +5,7 @@ module.exports = function (paths) {
 				{
 					test: /\.js$/,
 					include: paths,
+					exclude: /node-modules/,
 					use: {
 						loader: 'babel-loader',
 						options: {
@@ -13,13 +14,6 @@ module.exports = function (paths) {
 					}
 				}
 			]
-			// loaders: [
-			// 	{
-			// 		test: /\.js$/,
-			// 		loaders: ['babel-loader']
-			// 	}
-			// ]
-				
 		}
 	};
 };

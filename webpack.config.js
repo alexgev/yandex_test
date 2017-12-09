@@ -1,11 +1,12 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const merge = require('webpack-merge');
-const html = require('./webpack/html');
 const sass = require('./webpack/sass');
 const fontsForDev = require('./webpack/fonts-for-development');
 const fontsForProd = require('./webpack/fonts-for-production');
 const es6 = require('./webpack/es6');
+const uglifyjs = require('./webpack/uglifyjs');
+const css = require('./webpack/css');
 
 const PATHS = {
 	source: path.join(__dirname, "source"),
@@ -25,7 +26,6 @@ const common = merge([
 			})
 		]
 	},
-	html(),
 	sass(),
 ]);
 
@@ -34,7 +34,8 @@ module.exports = function(env) {
 		return merge([
 			common,
 			fontsForProd(),
-			es6()
+			es6(),
+			uglifyjs()
 		]);
 	};
 	if (env === 'development') {

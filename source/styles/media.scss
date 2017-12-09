@@ -20,13 +20,18 @@
 
 
 //Custom
-@media only screen and (max-width : 584px) {
-
+@media only screen and (max-width : 567px) {
 	.progress-bar-place, .progress-states-place {
 		clear: both;
+		// height: $progress-width/2 - $progress-padding;
+		width: $progress-height - $progress-padding * 2;
 		height: $progress-width/2 - $progress-padding;
-		width: 100%;
+		
 	}
+
+	// .progress-bar-place {
+	// 	display: none;
+	// }
 
 	.progress-bar {
 		top: 60px;
@@ -40,8 +45,8 @@
 		left: 91px;
 	}
 	.progress-api {
-		width: $progress-height;
-		height: $progress-width;
+		// width: $progress-height;
+		// height: $progress-width;
 	}
 }
 

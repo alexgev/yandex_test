@@ -10,16 +10,21 @@
 	font-family: $default-font;
 	font-weight: normal;
 	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-appearance: none;
 }
 
 body {
 	background-color: #bfbfbf;
+	// overflow-y: scroll;
+	text-align: center;
 }
 
 .progress-api {
-	width: $progress-width;
-	height: $progress-height;
-	margin: auto;
+	// width: $progress-width;
+	// height: $progress-height;
+	display: inline-block;
+	// margin: auto;
 	background-color: #fff;
 	padding: $progress-padding;
 }
@@ -34,7 +39,8 @@ body {
 .progress-bar-place, .progress-states-place {
 	float: left;
 	width: $progress-width/2 - $progress-padding;
-	height: 100%;
+	height: $progress-height - $progress-padding * 2;
+	// height: 100%;
 	position: relative;
 }
 
@@ -195,6 +201,7 @@ body {
 	left: 55px;
 	top: 0;
 }
+
 
 
 

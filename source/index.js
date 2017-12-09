@@ -3,16 +3,16 @@ import './styles/index.scss';
 document.addEventListener("DOMContentLoaded", document.body.style.visibility = "visible");
 
 
-var inputValue = document.getElementsByClassName("switch-state__input_text")[0];
-var progressBar = document.getElementsByClassName("progress-bar")[0];
-var progressBarPlace = document.getElementsByClassName("progress-bar-place")[0];
+const inputValue = document.getElementsByClassName("switch-state__input_text")[0];
+const progressBar = document.getElementsByClassName("progress-bar")[0];
+const progressBarPlace = document.getElementsByClassName("progress-bar-place")[0];
 
-var progressBarBefore = document.getElementsByClassName("progress-bar-before")[0];
-var progressBarAfter = document.getElementsByClassName("progress-bar-after")[0];
+const progressBarBefore = document.getElementsByClassName("progress-bar-before")[0];
+const progressBarAfter = document.getElementsByClassName("progress-bar-after")[0];
 
-var stateAnimated = document.getElementById("state-animated");
+const stateAnimated = document.getElementById("state-animated");
 
-var stateHidden = document.getElementById("state-hidden");
+const stateHidden = document.getElementById("state-hidden");
 
 let setVendor = (elem, prop, value) => {
 	elem.style["-webkit-tranform"] = value;
@@ -26,7 +26,7 @@ inputValue.oninput = () => {
 	if (inputValue.value[inputValue.value.length - 1] < '0' || inputValue.value[inputValue.value.length - 1] > '9') {
 		inputValue.value = '';
 	}
-	var progressValue = inputValue.value / 100 * 360;
+	let progressValue = Math.round(inputValue.value / 100 * 360);
 	console.log(progressValue);
 	if (inputValue.value <= 0 && inputValue.value != '') {
 		inputValue.value = 0;
@@ -73,9 +73,11 @@ class AnimateBlock {
 	}
 }
 
+let baseValueAnimated = stateAnimated.hasAttribute("checked");
+
 let animateProgressBar = new AnimateBlock(baseValueAnimated, progressBar);
 
-var baseValueAnimated = stateAnimated.hasAttribute("checked");
+
 
 
 if (baseValueAnimated == true) {
@@ -111,70 +113,6 @@ if (baseValueHidden == true) {
 	progressBarPlace.style.display = "none";
 }
 
-
-let progressApi = document.getElementsByClassName("progress-api")[0];
-let progressApiPadding = getComputedStyle(progressApi).padding.replace(/[^0-9]/g,"");
-let progressApiWidth = getComputedStyle(progressApi).width.replace(/[^0-9]/g,"");
-let progressApiHeight = getComputedStyle(progressApi).height.replace(/[^0-9]/g,"");
-
-console.log(progressApiWidth);
-console.log(progressApiHeight);
-
-// window.onload = () => {
-// 	if (window.innerWidth <= 568) {
-// 		let a = progressApiHeight;
-// 		progressApiHeight = progressApiWidth;
-// 		progressApiWidth = a;
-// 	}
-// }
-
-(function() {
-	var throttle = function(type, name, obj) {
-		obj = obj || window;
-		var running = false;
-		var func = function() {
-			if (running) { return; }
-			running = true;
-			requestAnimationFrame(function() {
-				obj.dispatchEvent(new CustomEvent(name));
-				running = false;
-			});
-		};
-		obj.addEventListener(type, func);
-	};
-
-	/* init - you can init any event */
-	throttle("resize", "optimizedResize");
-})();
-
-
-let typeOfChange = false;
-if (window.innerWidth <= 584) {
-	typeOfChange = "lastChangeOnSmallSceen";
-} else {
-	typeOfChange = "lastChangeOnLargeScreen";
-}
-// handle event
-window.addEventListener("optimizedResize", function() {
-	// progressApiWidth = getComputedStyle(progressApi).width.replace(/[^0-9]/g,"");
-	if (window.innerWidth <= 584 && typeOfChange == "lastChangeOnLargeScreen") {
-		let a = progressApiHeight;
-		progressApiHeight = progressApiWidth;
-		progressApiWidth = a;
-		progressApi.style.height = `${progressApiHeight}px`;
-		progressApi.style.width = `${progressApiWidth}px`;
-		typeOfChange = "lastChangeOnSmallSceen";
-	} else if (window.innerWidth > 584 && typeOfChange == "lastChangeOnSmallSceen") {
-		let a = progressApiHeight;
-		progressApiHeight = progressApiWidth;
-		progressApiWidth = a;
-		progressApi.style.height = `${progressApiHeight}px`;
-		progressApi.style.width = `${progressApiWidth}px`;
-		typeOfChange = "lastChangeOnLargeScreen";
-	}
-	
-});
-
 stateHidden.onchange = () => {
 	if (countOfChangeHidden == 0) {
 		valueHidden = !baseValueHidden;
@@ -182,23 +120,9 @@ stateHidden.onchange = () => {
 	countOfChangeHidden++;
 
 	if (valueHidden == true) {
-		console.log(progressApiWidth);
-		console.log(progressApiHeight);
-		if (progressApiHeight >= progressApiWidth) {
-			progressApi.style.height = `${progressApiHeight / 2 + +(progressApiPadding)}px`;
-		} else {
-			progressApi.style.width = `${progressApiWidth / 2 + +(progressApiPadding)}px`;
-		}
 		progressBarPlace.style.display = "none";
 		valueHidden = !valueHidden;
 	} else {
-		if (progressApiHeight >= progressApiWidth) {
-			progressApi.style.height = `${progressApiHeight}px`;
-		} else {
-			progressApi.style.width = `${progressApiWidth}px`;
-		}
-		console.log(progressApiWidth);
-		console.log(progressApiHeight);
 		progressBarPlace.style.display = "block";
 		valueHidden = !valueHidden;
 	}

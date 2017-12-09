@@ -101,7 +101,7 @@ inputValue.oninput = function () {
 	if (inputValue.value[inputValue.value.length - 1] < '0' || inputValue.value[inputValue.value.length - 1] > '9') {
 		inputValue.value = '';
 	}
-	var progressValue = inputValue.value / 100 * 360;
+	var progressValue = Math.round(inputValue.value / 100 * 360);
 	console.log(progressValue);
 	if (inputValue.value <= 0 && inputValue.value != '') {
 		inputValue.value = 0;
@@ -155,9 +155,9 @@ var AnimateBlock = function () {
 	return AnimateBlock;
 }();
 
-var animateProgressBar = new AnimateBlock(baseValueAnimated, progressBar);
-
 var baseValueAnimated = stateAnimated.hasAttribute("checked");
+
+var animateProgressBar = new AnimateBlock(baseValueAnimated, progressBar);
 
 if (baseValueAnimated == true) {
 	animateProgressBar.startAnimate();
@@ -189,69 +189,6 @@ if (baseValueHidden == true) {
 	progressBarPlace.style.display = "none";
 }
 
-var progressApi = document.getElementsByClassName("progress-api")[0];
-var progressApiPadding = getComputedStyle(progressApi).padding.replace(/[^0-9]/g, "");
-var progressApiWidth = getComputedStyle(progressApi).width.replace(/[^0-9]/g, "");
-var progressApiHeight = getComputedStyle(progressApi).height.replace(/[^0-9]/g, "");
-
-console.log(progressApiWidth);
-console.log(progressApiHeight);
-
-// window.onload = () => {
-// 	if (window.innerWidth <= 568) {
-// 		let a = progressApiHeight;
-// 		progressApiHeight = progressApiWidth;
-// 		progressApiWidth = a;
-// 	}
-// }
-
-(function () {
-	var throttle = function throttle(type, name, obj) {
-		obj = obj || window;
-		var running = false;
-		var func = function func() {
-			if (running) {
-				return;
-			}
-			running = true;
-			requestAnimationFrame(function () {
-				obj.dispatchEvent(new CustomEvent(name));
-				running = false;
-			});
-		};
-		obj.addEventListener(type, func);
-	};
-
-	/* init - you can init any event */
-	throttle("resize", "optimizedResize");
-})();
-
-var typeOfChange = false;
-if (window.innerWidth <= 584) {
-	typeOfChange = "lastChangeOnSmallSceen";
-} else {
-	typeOfChange = "lastChangeOnLargeScreen";
-}
-// handle event
-window.addEventListener("optimizedResize", function () {
-	// progressApiWidth = getComputedStyle(progressApi).width.replace(/[^0-9]/g,"");
-	if (window.innerWidth <= 584 && typeOfChange == "lastChangeOnLargeScreen") {
-		var a = progressApiHeight;
-		progressApiHeight = progressApiWidth;
-		progressApiWidth = a;
-		progressApi.style.height = progressApiHeight + "px";
-		progressApi.style.width = progressApiWidth + "px";
-		typeOfChange = "lastChangeOnSmallSceen";
-	} else if (window.innerWidth > 584 && typeOfChange == "lastChangeOnSmallSceen") {
-		var _a = progressApiHeight;
-		progressApiHeight = progressApiWidth;
-		progressApiWidth = _a;
-		progressApi.style.height = progressApiHeight + "px";
-		progressApi.style.width = progressApiWidth + "px";
-		typeOfChange = "lastChangeOnLargeScreen";
-	}
-});
-
 stateHidden.onchange = function () {
 	if (countOfChangeHidden == 0) {
 		valueHidden = !baseValueHidden;
@@ -259,23 +196,9 @@ stateHidden.onchange = function () {
 	countOfChangeHidden++;
 
 	if (valueHidden == true) {
-		console.log(progressApiWidth);
-		console.log(progressApiHeight);
-		if (progressApiHeight >= progressApiWidth) {
-			progressApi.style.height = progressApiHeight / 2 + +progressApiPadding + "px";
-		} else {
-			progressApi.style.width = progressApiWidth / 2 + +progressApiPadding + "px";
-		}
 		progressBarPlace.style.display = "none";
 		valueHidden = !valueHidden;
 	} else {
-		if (progressApiHeight >= progressApiWidth) {
-			progressApi.style.height = progressApiHeight + "px";
-		} else {
-			progressApi.style.width = progressApiWidth + "px";
-		}
-		console.log(progressApiWidth);
-		console.log(progressApiHeight);
 		progressBarPlace.style.display = "block";
 		valueHidden = !valueHidden;
 	}
@@ -302,8 +225,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--1-1!../../node_modules/postcss-loader/lib/index.js??ref--1-2!../../node_modules/sass-loader/lib/loader.js??ref--1-3!./index.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js??ref--1-1!../../node_modules/postcss-loader/lib/index.js??ref--1-2!../../node_modules/sass-loader/lib/loader.js??ref--1-3!./index.scss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--0-1!../../node_modules/postcss-loader/lib/index.js??ref--0-2!../../node_modules/sass-loader/lib/loader.js??ref--0-3!./index.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--0-1!../../node_modules/postcss-loader/lib/index.js??ref--0-2!../../node_modules/sass-loader/lib/loader.js??ref--0-3!./index.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -321,7 +244,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "@font-face{font-family:roboto-ex;src:url(" + __webpack_require__(4) + ") format(\"eot\"),url(" + __webpack_require__(5) + ") format(\"woff\"),url(" + __webpack_require__(6) + ") format(\"truetype\")}@font-face{font-family:roboto-ex;font-weight:700;src:url(" + __webpack_require__(7) + ") format(\"eot\"),url(" + __webpack_require__(8) + ") format(\"woff\"),url(" + __webpack_require__(9) + ") format(\"truetype\")}@font-face{font-family:roboto-ex;font-weight:300;src:url(" + __webpack_require__(10) + ") format(\"eot\"),url(" + __webpack_require__(11) + ") format(\"woff\"),url(" + __webpack_require__(12) + ") format(\"truetype\")}*{margin:0;border:none;padding:0;list-style:none;font-size:16px;line-height:1.75;font-family:roboto-ex;font-weight:400;-webkit-box-sizing:border-box;box-sizing:border-box}body{background-color:#bfbfbf}.progress-api{width:568px;height:320px;margin:auto;background-color:#fff;padding:15px}.progress-bar-place__header{font-size:30px;line-height:.8;margin-left:-2px}.progress-bar-place,.progress-states-place{float:left;width:269px;height:100%;position:relative}.progress-bar{position:absolute;width:160px;top:0;bottom:0;right:20px;margin:auto;height:160px;border-radius:50%;background-color:#fdd94c}.progress-bar .progress-bar-before{-webkit-transform-origin:50% 50%;-ms-transform-origin:50% 50%;transform-origin:50% 50%;-webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg);z-index:1}.progress-bar .progress-bar-after,.progress-bar .progress-bar-before{position:absolute;background-color:#eeeeeb;width:160px;height:160px;border-radius:50%;clip:rect(0,80px,160px,0)}.progress-bar .progress-bar-after{-webkit-transform-origin:50% 50%;-ms-transform-origin:50% 50%;transform-origin:50% 50%;-webkit-transform:rotate(0deg);-ms-transform:rotate(0deg);transform:rotate(0deg)}.progress-bar .progress-bar__mask{position:absolute;top:8px;left:8px;width:144px;height:144px;background-color:#fff;border-radius:50%;z-index:2}.progress-states{display:inline-block;vertical-align:middle;height:110px;position:absolute;top:0;bottom:0;right:0;left:50px;margin:auto}.switch-state{position:relative;display:block;width:45px;height:30px;margin-bottom:10px}.switch-state:last-child{margin-bottom:0}.switch-state__input{display:none}.switch-state__slider{cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#494949}.switch-state__slider,.switch-state__slider:before{position:absolute;-webkit-transition:.4s;-o-transition:.4s;transition:.4s}.switch-state__slider:before{content:\"\";height:26px;width:26px;left:2px;bottom:2px;background-color:#d7d7d7}.switch-state__input:checked+.switch-state__slider{background-color:#7dd220}.switch-state__input:checked+.switch-state__slider:before{background-color:#fdfdfd}.switch-state__input:focus+.switch-state__slider{-webkit-box-shadow:0 0 1px #2196f3;box-shadow:0 0 1px #2196f3}.switch-state__input:checked+.switch-state__slider:before{-webkit-transform:translateX(15px);-ms-transform:translateX(15px);transform:translateX(15px)}.switch-state__slider{border-radius:34px}.switch-state__slider:before{border-radius:50%}.switch-state_animation{top:0;right:0}.switch-state__input_text{-webkit-box-sizing:border-box;box-sizing:border-box;text-align:center;width:45px;border-radius:15px;padding:0 7px;border:2px solid #d7d7d7;outline:none}.progress-state-animation,.progress-state-hide,.progress-state-value{position:relative}.switch-state__span{position:absolute;left:55px;top:0}@media only screen and (max-width:584px){.progress-bar-place,.progress-states-place{clear:both;height:269px;width:100%}.progress-bar{top:60px;right:0;left:0;bottom:20px;margin:auto}.progress-states{left:91px}.progress-api{width:320px;height:568px}}", ""]);
+exports.push([module.i, "@font-face{font-family:roboto-ex;src:url(" + __webpack_require__(4) + ") format(\"eot\"),url(" + __webpack_require__(5) + ") format(\"woff\"),url(" + __webpack_require__(6) + ") format(\"truetype\")}@font-face{font-family:roboto-ex;font-weight:700;src:url(" + __webpack_require__(7) + ") format(\"eot\"),url(" + __webpack_require__(8) + ") format(\"woff\"),url(" + __webpack_require__(9) + ") format(\"truetype\")}@font-face{font-family:roboto-ex;font-weight:300;src:url(" + __webpack_require__(10) + ") format(\"eot\"),url(" + __webpack_require__(11) + ") format(\"woff\"),url(" + __webpack_require__(12) + ") format(\"truetype\")}*{margin:0;border:none;padding:0;list-style:none;font-size:16px;line-height:1.75;font-family:roboto-ex;font-weight:400;-webkit-box-sizing:border-box;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-appearance:none}body{background-color:#bfbfbf;text-align:center}.progress-api{display:inline-block;background-color:#fff;padding:15px}.progress-bar-place__header{font-size:30px;line-height:.8;margin-left:-2px}.progress-bar-place,.progress-states-place{float:left;width:269px;height:290px;position:relative}.progress-bar{position:absolute;width:160px;top:0;bottom:0;right:20px;margin:auto;height:160px;border-radius:50%;background-color:#fdd94c}.progress-bar .progress-bar-before{-webkit-transform-origin:50% 50%;-ms-transform-origin:50% 50%;transform-origin:50% 50%;-webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg);z-index:1}.progress-bar .progress-bar-after,.progress-bar .progress-bar-before{position:absolute;background-color:#eeeeeb;width:160px;height:160px;border-radius:50%;clip:rect(0,80px,160px,0)}.progress-bar .progress-bar-after{-webkit-transform-origin:50% 50%;-ms-transform-origin:50% 50%;transform-origin:50% 50%;-webkit-transform:rotate(0deg);-ms-transform:rotate(0deg);transform:rotate(0deg)}.progress-bar .progress-bar__mask{position:absolute;top:8px;left:8px;width:144px;height:144px;background-color:#fff;border-radius:50%;z-index:2}.progress-states{display:inline-block;vertical-align:middle;height:110px;position:absolute;top:0;bottom:0;right:0;left:50px;margin:auto}.switch-state{position:relative;display:block;width:45px;height:30px;margin-bottom:10px}.switch-state:last-child{margin-bottom:0}.switch-state__input{display:none}.switch-state__slider{cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#494949}.switch-state__slider,.switch-state__slider:before{position:absolute;-webkit-transition:.4s;-o-transition:.4s;transition:.4s}.switch-state__slider:before{content:\"\";height:26px;width:26px;left:2px;bottom:2px;background-color:#d7d7d7}.switch-state__input:checked+.switch-state__slider{background-color:#7dd220}.switch-state__input:checked+.switch-state__slider:before{background-color:#fdfdfd}.switch-state__input:focus+.switch-state__slider{-webkit-box-shadow:0 0 1px #2196f3;box-shadow:0 0 1px #2196f3}.switch-state__input:checked+.switch-state__slider:before{-webkit-transform:translateX(15px);-ms-transform:translateX(15px);transform:translateX(15px)}.switch-state__slider{border-radius:34px}.switch-state__slider:before{border-radius:50%}.switch-state_animation{top:0;right:0}.switch-state__input_text{-webkit-box-sizing:border-box;box-sizing:border-box;text-align:center;width:45px;border-radius:15px;padding:0 7px;border:2px solid #d7d7d7;outline:none}.progress-state-animation,.progress-state-hide,.progress-state-value{position:relative}.switch-state__span{position:absolute;left:55px;top:0}@media only screen and (max-width:567px){.progress-bar-place,.progress-states-place{clear:both;width:290px;height:269px}.progress-bar{top:60px;right:0;left:0;bottom:20px;margin:auto}.progress-states{left:91px}}", ""]);
 
 // exports
 
