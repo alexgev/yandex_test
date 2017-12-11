@@ -1,7 +1,11 @@
 import './styles/index.scss';
 require('./favicon16.png');
 
-document.addEventListener("DOMContentLoaded", document.body.style.visibility = "visible");
+document.addEventListener("DOMContentLoaded",
+() => {
+	document.body.style.visibility = "visible";
+});
+
 
 
 const inputValue = document.getElementsByClassName("switch-state__input_text")[0];
